@@ -1,9 +1,8 @@
 import { logger } from "./logger";
 import { InputConfigIndexer } from "./types/config.types";
-import type { MergedIndexerResource, MergedTagResource } from "./__generated__/mergedTypes";
+import type { MergedTagResource } from "./__generated__/mergedTypes";
 import type { IArrClient } from "./clients/unified-client";
-
-type IndexerField = { name: string; value?: unknown };
+import type { IndexerField, IndexerResource } from "./types/indexer.types";
 
 const SENSITIVE_FIELDS = new Set(["apiKey", "password", "api_key"]);
 
@@ -42,7 +41,7 @@ function normalizeIndexer(desired: InputConfigIndexer, serverTags: MergedTagReso
   return { normalized, missingTags: missing };
 }
 
-function findServerIndexer(current: MergedIndexerResource[], desired: NormalizedIndexer): MergedIndexerResource | undefined {
+function findServerIndexer(current: IndexerResource[], desired: NormalizedIndexer): IndexerResource | undefined {
   return current.find((c) => c.name === desired.name && c.implementation === desired.implementation);
 }
 
@@ -65,7 +64,7 @@ function areTagsEqual(serverTags: number[] = [], desiredTags: number[] = []): bo
   return [...serverTags].sort().join(",") === [...desiredTags].sort().join(",");
 }
 
-function hasIndexerChanged(current: MergedIndexerResource, desired: NormalizedIndexer): boolean {
+function hasIndexerChanged(current: IndexerResource, desired: NormalizedIndexer): boolean {
   if (desired.enableRss !== undefined && current.enableRss !== desired.enableRss) return true;
   if (desired.enableAutomaticSearch !== undefined && current.enableAutomaticSearch !== desired.enableAutomaticSearch) return true;
   if (desired.enableInteractiveSearch !== undefined && current.enableInteractiveSearch !== desired.enableInteractiveSearch) return true;
@@ -92,17 +91,17 @@ function hasIndexerChanged(current: MergedIndexerResource, desired: NormalizedIn
 
 export type IndexersDiff = {
   toCreate: NormalizedIndexer[];
-  toUpdate: { id: number; data: MergedIndexerResource }[];
+  toUpdate: { id: number; data: IndexerResource }[];
   missingTags: string[];
 };
 
 export function calculateIndexersDiff(
-  current: MergedIndexerResource[],
+  current: IndexerResource[],
   desired: InputConfigIndexer[],
   serverTags: MergedTagResource[],
 ): IndexersDiff | undefined {
   const toCreate: NormalizedIndexer[] = [];
-  const toUpdate: { id: number; data: MergedIndexerResource }[] = [];
+  const toUpdate: { id: number; data: IndexerResource }[] = [];
   const missingTags: string[] = [];
 
   for (const desiredIndexer of desired) {
@@ -118,7 +117,7 @@ export function calculateIndexersDiff(
     if (hasIndexerChanged(serverIndexer, normalized)) {
       toUpdate.push({
         id: serverIndexer.id!,
-        data: { ...serverIndexer, ...normalized } as MergedIndexerResource,
+        data: { ...serverIndexer, ...normalized } as IndexerResource,
       });
     } else {
       logger.info(`Indexer unchanged: ${normalized.name} (${normalized.implementation})`);
@@ -143,7 +142,7 @@ export async function applyIndexers(api: IArrClient, diff: IndexersDiff | undefi
     } else {
       logger.info(`Creating Indexer: ${indexer.name} (${indexer.implementation})`);
       try {
-        await api.createIndexer(indexer);
+        await api.createIndexer(indexer as unknown as IndexerResource);
       } catch (error: any) {
         logger.error(`Failed creating Indexer (${indexer.name})`);
         throw error;
@@ -157,7 +156,7 @@ export async function applyIndexers(api: IArrClient, diff: IndexersDiff | undefi
     } else {
       logger.info(`Updating Indexer: ${data.name} (id=${id})`);
       try {
-        await api.updateIndexer(String(id), data);
+        await api.updateIndexer(String(id), data as IndexerResource);
       } catch (error: any) {
         logger.error(`Failed updating Indexer (${data.name})`);
         throw error;

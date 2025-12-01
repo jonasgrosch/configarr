@@ -3,6 +3,7 @@ import { Api } from "../__generated__/lidarr/Api";
 import {
   CustomFormatResource,
   DownloadClientResource,
+  IndexerResource,
   LanguageResource,
   MetadataProfileResource,
   QualityDefinitionResource,
@@ -178,11 +179,11 @@ export class LidarrClient implements IArrClient<QualityProfileResource, QualityD
     return this.api.v1IndexerList();
   }
 
-  async createIndexer(data: any) {
+  async createIndexer(data: IndexerResource) {
     return this.api.v1IndexerCreate(data);
   }
 
-  async updateIndexer(id: string, data: any) {
+  async updateIndexer(id: string, data: IndexerResource) {
     return this.api.v1IndexerUpdate(Number.parseInt(id), data);
   }
 

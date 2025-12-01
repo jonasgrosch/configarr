@@ -3,6 +3,7 @@ import { Api } from "../__generated__/readarr/Api";
 import {
   CustomFormatResource,
   DownloadClientResource,
+  IndexerResource,
   LanguageResource,
   MetadataProfileResource,
   QualityDefinitionResource,
@@ -176,11 +177,11 @@ export class ReadarrClient
     return this.api.v1IndexerList();
   }
 
-  async createIndexer(data: any) {
+  async createIndexer(data: IndexerResource) {
     return this.api.v1IndexerCreate(data);
   }
 
-  async updateIndexer(id: string, data: any) {
+  async updateIndexer(id: string, data: IndexerResource) {
     return this.api.v1IndexerUpdate(id, data);
   }
 

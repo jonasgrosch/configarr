@@ -2,6 +2,8 @@ import { MergedCustomFormatResource, MergedQualityDefinitionResource, MergedQual
 import { logger } from "../logger";
 import { ArrType } from "../types/common.types";
 import type { DownloadClientResource } from "../types/download-client.types";
+import type { IndexerResource } from "../types/indexer.types";
+import type { DownloadClientResource } from "../types/download-client.types";
 import { LidarrClient } from "./lidarr-client";
 import { RadarrClient } from "./radarr-client";
 import { ReadarrClient } from "./readarr-client";
@@ -144,10 +146,10 @@ export interface IArrClient<
   deleteDownloadClient(id: string): Promise<void>;
 
   // Indexers
-  getIndexers(): Promise<any>;
-  createIndexer(data: any): Promise<any>;
-  updateIndexer(id: string, data: any): Promise<any>;
-  deleteIndexer(id: string): Promise<any>;
+  getIndexers(): Promise<IndexerResource[]>;
+  createIndexer(data: IndexerResource): Promise<IndexerResource>;
+  updateIndexer(id: string, data: IndexerResource): Promise<IndexerResource>;
+  deleteIndexer(id: string): Promise<void>;
 
   // Host config (authentication)
   getHostConfig(): Promise<any>;

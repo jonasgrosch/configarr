@@ -3,6 +3,7 @@ import { Api } from "../__generated__/sonarr/Api";
 import {
   CustomFormatResource,
   DownloadClientResource,
+  IndexerResource,
   LanguageResource,
   QualityDefinitionResource,
   QualityProfileResource,
@@ -162,11 +163,11 @@ export class SonarrClient implements IArrClient<QualityProfileResource, QualityD
     return this.api.v3IndexerList();
   }
 
-  async createIndexer(data: any) {
+  async createIndexer(data: IndexerResource) {
     return this.api.v3IndexerCreate(data);
   }
 
-  async updateIndexer(id: string, data: any) {
+  async updateIndexer(id: string, data: IndexerResource) {
     return this.api.v3IndexerUpdate(Number.parseInt(id), data);
   }
 
