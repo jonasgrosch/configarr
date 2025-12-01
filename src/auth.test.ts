@@ -1,5 +1,5 @@
 import { describe, expect, test, vi } from "vitest";
-import type { MergedHostConfigResource } from "./__generated__/mergedTypes";
+import type { HostConfigResource } from "./types/auth.types";
 import { calculateAuthDiff, syncAuthSettings } from "./auth";
 import type { IArrClient } from "./clients/unified-client";
 
@@ -14,7 +14,7 @@ const mockHostConfig = {
   authenticationMethod: "forms",
   authenticationRequired: "enabled",
   username: "admin",
-} as unknown as MergedHostConfigResource;
+} as HostConfigResource;
 
 describe("calculateAuthDiff", () => {
   test("returns undefined when no changes requested", () => {

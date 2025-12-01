@@ -3,6 +3,7 @@ import { Api } from "../__generated__/readarr/Api";
 import {
   CustomFormatResource,
   DownloadClientResource,
+  HostConfigResource,
   IndexerResource,
   LanguageResource,
   MetadataProfileResource,
@@ -119,7 +120,7 @@ export class ReadarrClient
     return this.api.v1ConfigHostList();
   }
 
-  async updateHostConfig(id: string, data: any) {
+  async updateHostConfig(id: string, data: HostConfigResource) {
     return this.api.v1ConfigHostUpdate(id, data);
   }
 

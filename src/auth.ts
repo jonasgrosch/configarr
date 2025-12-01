@@ -1,12 +1,9 @@
 import { logger } from "./logger";
-import type { MergedHostConfigResource } from "./__generated__/mergedTypes";
 import type { IArrClient } from "./clients/unified-client";
 import type { InputConfigAuthSettings } from "./types/config.types";
+import type { HostConfigResource } from "./types/auth.types";
 
-type AuthPayloadFields = Pick<
-  MergedHostConfigResource,
-  "authenticationMethod" | "authenticationRequired" | "username" | "password" | "passwordConfirmation"
->;
+type AuthPayloadFields = Pick<HostConfigResource, "authenticationMethod" | "authenticationRequired" | "username" | "password" | "passwordConfirmation">;
 
 const COMPARABLE_FIELDS: Array<keyof AuthPayloadFields> = ["authenticationMethod", "authenticationRequired", "username"];
 
@@ -37,10 +34,10 @@ function mapAuthSettings(settings: InputConfigAuthSettings): Partial<AuthPayload
 
 export type AuthDiff = {
   id: string;
-  payload: MergedHostConfigResource;
+  payload: HostConfigResource;
 };
 
-export function calculateAuthDiff(current: MergedHostConfigResource, desired: InputConfigAuthSettings): AuthDiff | undefined {
+export function calculateAuthDiff(current: HostConfigResource, desired: InputConfigAuthSettings): AuthDiff | undefined {
   const mapped = mapAuthSettings(desired);
 
   if (Object.keys(mapped).length === 0) {
@@ -54,7 +51,7 @@ export function calculateAuthDiff(current: MergedHostConfigResource, desired: In
     return undefined;
   }
 
-  const payload: MergedHostConfigResource = {
+  const payload: HostConfigResource = {
     ...current,
     ...mapped,
   };
@@ -70,7 +67,7 @@ export async function syncAuthSettings(api: IArrClient, desired: InputConfigAuth
     return;
   }
 
-  const currentConfig = (await api.getHostConfig()) as MergedHostConfigResource;
+  const currentConfig = (await api.getHostConfig()) as HostConfigResource;
   const diff = calculateAuthDiff(currentConfig, desired);
 
   if (!diff) {

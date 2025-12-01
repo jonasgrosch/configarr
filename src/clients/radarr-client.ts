@@ -3,6 +3,7 @@ import { Api } from "../__generated__/radarr/Api";
 import {
   CustomFormatResource,
   DownloadClientResource,
+  HostConfigResource,
   IndexerResource,
   LanguageResource,
   QualityDefinitionResource,
@@ -113,7 +114,7 @@ export class RadarrClient implements IArrClient<QualityProfileResource, QualityD
     return this.api.v3ConfigHostList();
   }
 
-  async updateHostConfig(id: string, data: any) {
+  async updateHostConfig(id: string, data: HostConfigResource) {
     return this.api.v3ConfigHostUpdate(id, data);
   }
 

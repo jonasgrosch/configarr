@@ -2,8 +2,8 @@ import { MergedCustomFormatResource, MergedQualityDefinitionResource, MergedQual
 import { logger } from "../logger";
 import { ArrType } from "../types/common.types";
 import type { DownloadClientResource } from "../types/download-client.types";
+import type { HostConfigResource } from "../types/auth.types";
 import type { IndexerResource } from "../types/indexer.types";
-import type { DownloadClientResource } from "../types/download-client.types";
 import { LidarrClient } from "./lidarr-client";
 import { RadarrClient } from "./radarr-client";
 import { ReadarrClient } from "./readarr-client";
@@ -152,8 +152,8 @@ export interface IArrClient<
   deleteIndexer(id: string): Promise<void>;
 
   // Host config (authentication)
-  getHostConfig(): Promise<any>;
-  updateHostConfig(id: string, data: any): Promise<any>;
+  getHostConfig(): Promise<HostConfigResource>;
+  updateHostConfig(id: string, data: HostConfigResource): Promise<HostConfigResource>;
 
   // Tags
   getTags(): Promise<any>;
@@ -294,11 +294,11 @@ export class UnifiedClient implements IArrClient {
     return this.api.getDownloadClients();
   }
 
-  async createDownloadClient(data: any) {
+  async createDownloadClient(data: DownloadClientResource) {
     return this.api.createDownloadClient(data);
   }
 
-  async updateDownloadClient(id: string, data: any) {
+  async updateDownloadClient(id: string, data: DownloadClientResource) {
     return this.api.updateDownloadClient(id, data);
   }
 
@@ -310,11 +310,11 @@ export class UnifiedClient implements IArrClient {
     return this.api.getIndexers();
   }
 
-  async createIndexer(data: any) {
+  async createIndexer(data: IndexerResource) {
     return this.api.createIndexer(data);
   }
 
-  async updateIndexer(id: string, data: any) {
+  async updateIndexer(id: string, data: IndexerResource) {
     return this.api.updateIndexer(id, data);
   }
 
@@ -326,7 +326,7 @@ export class UnifiedClient implements IArrClient {
     return this.api.getHostConfig();
   }
 
-  async updateHostConfig(id: string, data: any) {
+  async updateHostConfig(id: string, data: HostConfigResource) {
     return this.api.updateHostConfig(id, data);
   }
 

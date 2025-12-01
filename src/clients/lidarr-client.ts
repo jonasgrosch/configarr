@@ -3,6 +3,7 @@ import { Api } from "../__generated__/lidarr/Api";
 import {
   CustomFormatResource,
   DownloadClientResource,
+  HostConfigResource,
   IndexerResource,
   LanguageResource,
   MetadataProfileResource,
@@ -121,7 +122,7 @@ export class LidarrClient implements IArrClient<QualityProfileResource, QualityD
     return this.api.v1ConfigHostList();
   }
 
-  async updateHostConfig(id: string, data: any) {
+  async updateHostConfig(id: string, data: HostConfigResource) {
     return this.api.v1ConfigHostUpdate(id, data);
   }
 

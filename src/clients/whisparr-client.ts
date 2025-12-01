@@ -3,6 +3,7 @@ import { Api } from "../__generated__/whisparr/Api";
 import {
   CustomFormatResource,
   DownloadClientResource,
+  HostConfigResource,
   IndexerResource,
   LanguageResource,
   QualityDefinitionResource,
@@ -123,7 +124,7 @@ export class WhisparrClient
     return this.api.v3ConfigHostList();
   }
 
-  async updateHostConfig(id: string, data: any) {
+  async updateHostConfig(id: string, data: HostConfigResource) {
     return this.api.v3ConfigHostUpdate(id, data);
   }
 
