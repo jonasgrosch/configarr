@@ -1,3 +1,4 @@
+import { AuthenticationRequiredType, AuthenticationType } from "../__generated__/sonarr/data-contracts";
 import { ConfigarrCF } from "./common.types";
 import { TrashCF, TrashQualityDefinitionQuality, TrashScores } from "./trashguide.types";
 
@@ -148,6 +149,8 @@ export type InputConfigArrInstance = {
   };
 
   download_clients?: InputConfigDownloadClient[];
+  indexers?: InputConfigIndexer[];
+  auth?: InputConfigAuthSettings;
 } & Pick<InputConfigSchema, "customFormatDefinitions">;
 
 export type InputConfigDelayProfile = {
@@ -161,6 +164,14 @@ export type InputConfigDelayProfile = {
   minimumCustomFormatScore?: number;
   order?: number;
   tags?: string[];
+};
+
+export type InputConfigAuthSettings = {
+  authentication_method?: AuthenticationType;
+  authentication_required?: AuthenticationRequiredType;
+  username?: string;
+  password?: string;
+  password_confirmation?: string;
 };
 
 export type InputConfigDownloadClient = {
@@ -179,6 +190,27 @@ export type InputConfigDownloadClient = {
   removeCompletedDownloads?: boolean;
   removeFailedDownloads?: boolean;
   tags?: string[]; // label names, resolved to IDs later
+};
+
+export type InputConfigIndexerField = {
+  name: string;
+  value?: unknown;
+};
+
+export type InputConfigIndexer = {
+  configContract?: string;
+  downloadClientId?: number;
+  enableAutomaticSearch?: boolean;
+  enableInteractiveSearch?: boolean;
+  enableRss?: boolean;
+  fields?: InputConfigIndexerField[];
+  implementation: string;
+  implementationName?: string;
+  infoLink?: string;
+  name: string;
+  priority?: number;
+  protocol?: "torrent" | "usenet";
+  tags?: string[];
 };
 
 export type MediaManagementType = {

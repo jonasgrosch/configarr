@@ -55,6 +55,10 @@ export interface TelemetryData {
 
   // Download clients
   download_clients: boolean;
+  // Indexers
+  indexers: boolean;
+  // Auth
+  auth: boolean;
 
   // Experimental features
   enable_full_git_clone: boolean;
@@ -253,6 +257,14 @@ export class Telemetry {
     if (!this.telemetryData.download_clients && instanceConfig.download_clients && instanceConfig.download_clients.length > 0) {
       this.telemetryData.download_clients = true;
     }
+
+    if (!this.telemetryData.indexers && instanceConfig.indexers && instanceConfig.indexers.length > 0) {
+      this.telemetryData.indexers = true;
+    }
+
+    if (!this.telemetryData.auth && instanceConfig.auth) {
+      this.telemetryData.auth = true;
+    }
   }
 
   private collectTelemetryData(globalConfig: InputConfigSchema, instances: Record<ArrType, InputConfigArrInstance[]>): TelemetryData {
@@ -331,6 +343,8 @@ export class Telemetry {
       delay_profiles: allInstances.some((i) => i.delay_profiles !== undefined),
 
       download_clients: allInstances.some((i) => i.download_clients && i.download_clients.length > 0),
+      indexers: allInstances.some((i) => i.indexers && i.indexers.length > 0),
+      auth: allInstances.some((i) => i.auth !== undefined),
 
       enable_full_git_clone: globalConfig.enableFullGitClone === true,
 

@@ -113,6 +113,14 @@ export class ReadarrClient
     return this.api.v1ConfigMediamanagementUpdate(id, data);
   }
 
+  async getHostConfig() {
+    return this.api.v1ConfigHostList();
+  }
+
+  async updateHostConfig(id: string, data: any) {
+    return this.api.v1ConfigHostUpdate(id, data);
+  }
+
   async getRootfolders() {
     return this.api.v1RootfolderList();
   }
@@ -161,6 +169,22 @@ export class ReadarrClient
 
   async deleteDownloadClient(id: string) {
     return this.api.v1DownloadclientDelete(Number.parseInt(id));
+  }
+
+  async getIndexers() {
+    return this.api.v1IndexerList();
+  }
+
+  async createIndexer(data: any) {
+    return this.api.v1IndexerCreate(data);
+  }
+
+  async updateIndexer(id: string, data: any) {
+    return this.api.v1IndexerUpdate(id, data);
+  }
+
+  async deleteIndexer(id: string) {
+    return this.api.v1IndexerDelete(Number.parseInt(id));
   }
 
   async getTags() {

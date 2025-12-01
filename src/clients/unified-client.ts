@@ -142,6 +142,16 @@ export interface IArrClient<
   updateDownloadClient(id: string, data: any): Promise<any>;
   deleteDownloadClient(id: string): Promise<any>;
 
+  // Indexers
+  getIndexers(): Promise<any>;
+  createIndexer(data: any): Promise<any>;
+  updateIndexer(id: string, data: any): Promise<any>;
+  deleteIndexer(id: string): Promise<any>;
+
+  // Host config (authentication)
+  getHostConfig(): Promise<any>;
+  updateHostConfig(id: string, data: any): Promise<any>;
+
   // Tags
   getTags(): Promise<any>;
   createTag(tag: any): Promise<any>;
@@ -291,6 +301,30 @@ export class UnifiedClient implements IArrClient {
 
   async deleteDownloadClient(id: string) {
     return this.api.deleteDownloadClient(id);
+  }
+
+  async getIndexers() {
+    return this.api.getIndexers();
+  }
+
+  async createIndexer(data: any) {
+    return this.api.createIndexer(data);
+  }
+
+  async updateIndexer(id: string, data: any) {
+    return this.api.updateIndexer(id, data);
+  }
+
+  async deleteIndexer(id: string) {
+    return this.api.deleteIndexer(id);
+  }
+
+  async getHostConfig() {
+    return this.api.getHostConfig();
+  }
+
+  async updateHostConfig(id: string, data: any) {
+    return this.api.updateHostConfig(id, data);
   }
 
   async getTags() {

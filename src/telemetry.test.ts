@@ -175,6 +175,8 @@ describe("Telemetry", () => {
             root_folders: ["folder1"],
             delay_profiles: { default: {} },
             download_clients: [{ name: "SABnzbd", implementation: "Sabnzbd" }],
+            indexers: [{ name: "NZBGeek", implementation: "Newznab" }],
+            auth: { authentication_method: "forms" } as any,
             include: [
               { template: "recyclarr-template", source: "RECYCLARR" },
               { template: "trash-template", source: "TRASH" },
@@ -218,6 +220,8 @@ describe("Telemetry", () => {
         root_folders: true,
         delay_profiles: true,
         download_clients: true,
+        indexers: true,
+        auth: true,
         enable_full_git_clone: true,
 
         sonarr_instances: 0,

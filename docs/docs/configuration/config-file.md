@@ -448,7 +448,6 @@ You can configure download clients declaratively. Only clients specified in conf
 sonarr:
   instance1:
     # ...
-    # since v<>. Optional
     download_clients:
       - name: SABnzbd
         implementation: Sabnzbd
@@ -466,7 +465,6 @@ sonarr:
 
 Notes:
 
-- available since `v<>`
 - Clients are matched by `name` + `implementation`
 - Only specified fields are updated - unspecified fields are preserved
 - Sensitive fields like `apiKey` and `password` are not compared (server masks them)
@@ -589,3 +587,53 @@ See example [Radarr API DelayProfile](https://radarr.video/docs/api/#/DelayProfi
   - https://whisparr.com/docs/api/#/MediaManagementConfig/get_api_v3_config_mediamanagement
   - https://readarr.com/docs/api/#/MediaManagementConfig/get_api_v1_config_mediamanagement
   - https://lidarr.audio/docs/api/#/MediaManagementConfig/get_api_v1_config_mediamanagement
+## Indexers {#indexers}
+
+You can manage indexers declaratively as well. Only indexers listed in the configuration are created or updated.
+
+```yml
+# ...
+sonarr:
+  instance1:
+    # ...
+    indexers:
+      - name: NZBGeek
+        implementation: Newznab
+        enableRss: true
+        enableAutomaticSearch: true
+        enableInteractiveSearch: true
+        priority: 25
+        protocol: usenet
+        fields:
+          - name: apiKey
+            value: !secret NZBGEEK_API_KEY
+          - name: url
+            value: https://api.nzbgeek.info
+```
+
+Notes:
+
+- Indexers are matched by `name` + `implementation`
+- Sensitive fields like `apiKey` are not compared (Arr masks them)
+- Tag names are mapped to IDs; unknown tags are logged
+
+## Authentication {#auth}
+
+You can manage host authentication settings through the `auth` block inside an instance. Only the provided fields are updated.
+
+```yml
+sonarr:
+  instance1:
+    auth:
+      authentication_method: forms
+      authentication_required: enabled
+      username: configarr
+      password: !secret SONARR_PASSWORD
+```
+
+Notes:
+
+- Supported methods: `none`, `basic`, `forms`, `external`
+- Supported requirements: `enabled`, `disabledForLocalAddresses`
+- `password` is treated as write-only; by default it is also used for `password_confirmation`
+- Set `password_confirmation` explicitly if your server requires a different confirmation string

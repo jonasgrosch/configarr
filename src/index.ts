@@ -30,6 +30,8 @@ import { TrashArrSupportedConst, TrashQualityDefinition, TrashQualityDefinitionQ
 import { isInConstArray } from "./util";
 import { syncRootFolders } from "./rootFolder/rootFolderSyncer";
 import { calculateDownloadClientsDiff, applyDownloadClients } from "./download-client";
+import { calculateIndexersDiff, applyIndexers } from "./indexer";
+import { syncAuthSettings } from "./auth";
 
 const pipeline = async (globalConfig: InputConfigSchema, instanceConfig: InputConfigArrInstance, arrType: ArrType) => {
   const api = getUnifiedClient();
@@ -50,6 +52,8 @@ const pipeline = async (globalConfig: InputConfigSchema, instanceConfig: InputCo
   if (Telemetry.isEnabled()) {
     getTelemetryInstance().trackInstanceConfig(config, arrType);
   }
+
+  await syncAuthSettings(api, config.auth, getEnvs().DRY_RUN);
 
   const idsToManage = calculateCFsToManage(config);
   logger.debug(Array.from(idsToManage), `CustomFormats to manage`);
@@ -301,6 +305,13 @@ const pipeline = async (globalConfig: InputConfigSchema, instanceConfig: InputCo
   const currentDownloadClients = await api.getDownloadClients();
   const dlcDiff = calculateDownloadClientsDiff(currentDownloadClients, config.download_clients ?? []);
   await applyDownloadClients(api, dlcDiff, getEnvs().DRY_RUN);
+
+  const currentIndexers = await api.getIndexers();
+  const indexerDiff = calculateIndexersDiff(currentIndexers, config.indexers ?? [], serverTags);
+  if (indexerDiff?.missingTags?.length) {
+    logger.warn(`Indexer tags not found: ${indexerDiff.missingTags.join(", ")}`);
+  }
+  await applyIndexers(api, indexerDiff, getEnvs().DRY_RUN);
 };
 
 const runArrType = async (

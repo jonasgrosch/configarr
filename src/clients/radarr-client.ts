@@ -107,6 +107,14 @@ export class RadarrClient implements IArrClient<QualityProfileResource, QualityD
     return this.api.v3ConfigMediamanagementUpdate(id, data);
   }
 
+  async getHostConfig() {
+    return this.api.v3ConfigHostList();
+  }
+
+  async updateHostConfig(id: string, data: any) {
+    return this.api.v3ConfigHostUpdate(id, data);
+  }
+
   async getRootfolders() {
     return this.api.v3RootfolderList();
   }
@@ -155,6 +163,22 @@ export class RadarrClient implements IArrClient<QualityProfileResource, QualityD
 
   async deleteDownloadClient(id: string) {
     return this.api.v3DownloadclientDelete(Number.parseInt(id));
+  }
+
+  async getIndexers() {
+    return this.api.v3IndexerList();
+  }
+
+  async createIndexer(data: any) {
+    return this.api.v3IndexerCreate(data);
+  }
+
+  async updateIndexer(id: string, data: any) {
+    return this.api.v3IndexerUpdate(Number.parseInt(id), data);
+  }
+
+  async deleteIndexer(id: string) {
+    return this.api.v3IndexerDelete(Number.parseInt(id));
   }
 
   async getTags() {

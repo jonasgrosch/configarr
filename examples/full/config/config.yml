@@ -43,6 +43,11 @@ sonarr:
     # Set the URL/API Key to your actual instance
     base_url: http://sonarr:8989
     api_key: !secret SONARR_API_KEY
+    # auth:
+    #   authentication_method: forms
+    #   authentication_required: enabled
+    #   username: configarr
+    #   password: !secret SONARR_PASSWORD
 
     # since v1.11.0, optional, for disabling instances
     #enabled: false
@@ -59,7 +64,6 @@ sonarr:
     #   ignore:
     #     - QualityProfileToKeep
 
-    # since v<>. Optional
     # download_clients:
     #   - name: SABnzbd
     #     implementation: Sabnzbd
@@ -329,3 +333,16 @@ lidarr:
 
     delete_unmanaged_metadata_profiles:
       enabled: true
+    # indexers:
+    #   - name: NZBGeek
+    #     implementation: Newznab
+    #     enableRss: true
+    #     enableAutomaticSearch: true
+    #     enableInteractiveSearch: true
+    #     priority: 25
+    #     protocol: usenet
+    #     fields:
+    #       - name: apiKey
+    #         value: your-api-key
+    #       - name: url
+    #         value: https://api.nzbgeek.info

@@ -269,6 +269,10 @@ const includeRecyclarrTemplate = (
     mergedTemplates.delay_profiles = template.delay_profiles;
   }
 
+  if (template.auth) {
+    mergedTemplates.auth = template.auth;
+  }
+
   // TODO Ignore recursive include for now
   if (template.include) {
     logger.warn(`Recursive includes not supported at the moment. Ignoring.`);
@@ -778,6 +782,14 @@ export const mergeConfigsAndTemplates = async (
 
   if (instanceConfig.download_clients) {
     mergedTemplates.download_clients = instanceConfig.download_clients;
+  }
+
+  if (instanceConfig.indexers) {
+    mergedTemplates.indexers = instanceConfig.indexers;
+  }
+
+  if (instanceConfig.auth) {
+    mergedTemplates.auth = instanceConfig.auth;
   }
 
   if (mergedTemplates.custom_formats && mergedTemplates.custom_formats.length > 0) {

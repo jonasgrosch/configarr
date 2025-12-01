@@ -68,3 +68,15 @@ export type MergedDownloadClientResource = import("./lidarr/data-contracts").Dow
   import("./readarr/data-contracts").DownloadClientResource &
   import("./sonarr/data-contracts").DownloadClientResource &
   import("./whisparr/data-contracts").DownloadClientResource;
+
+export type MergedIndexerResource = import("./lidarr/data-contracts").IndexerResource &
+  import("./radarr/data-contracts").IndexerResource &
+  import("./readarr/data-contracts").IndexerResource &
+  import("./sonarr/data-contracts").IndexerResource &
+  import("./whisparr/data-contracts").IndexerResource;
+
+export type MergedHostConfigResource = import("./lidarr/data-contracts").HostConfigResource &
+  import("./radarr/data-contracts").HostConfigResource &
+  import("./readarr/data-contracts").HostConfigResource &
+  import("./sonarr/data-contracts").HostConfigResource &
+  import("./whisparr/data-contracts").HostConfigResource;
