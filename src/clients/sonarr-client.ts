@@ -2,6 +2,7 @@ import { KyHttpClient } from "../__generated__/ky-client";
 import { Api } from "../__generated__/sonarr/Api";
 import {
   CustomFormatResource,
+  DownloadClientResource,
   LanguageResource,
   QualityDefinitionResource,
   QualityProfileResource,
@@ -145,11 +146,11 @@ export class SonarrClient implements IArrClient<QualityProfileResource, QualityD
     return this.api.v3DownloadclientList();
   }
 
-  async createDownloadClient(data: any) {
+  async createDownloadClient(data: DownloadClientResource) {
     return this.api.v3DownloadclientCreate(data);
   }
 
-  async updateDownloadClient(id: string, data: any) {
+  async updateDownloadClient(id: string, data: DownloadClientResource) {
     return this.api.v3DownloadclientUpdate(Number.parseInt(id), data);
   }
 

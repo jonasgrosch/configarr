@@ -1,6 +1,7 @@
 import { MergedCustomFormatResource, MergedQualityDefinitionResource, MergedQualityProfileResource } from "../__generated__/mergedTypes";
 import { logger } from "../logger";
 import { ArrType } from "../types/common.types";
+import type { DownloadClientResource } from "../types/download-client.types";
 import { LidarrClient } from "./lidarr-client";
 import { RadarrClient } from "./radarr-client";
 import { ReadarrClient } from "./readarr-client";
@@ -137,10 +138,10 @@ export interface IArrClient<
   deleteDelayProfile(id: string): Promise<any>;
 
   // Download Clients
-  getDownloadClients(): Promise<any>;
-  createDownloadClient(data: any): Promise<any>;
-  updateDownloadClient(id: string, data: any): Promise<any>;
-  deleteDownloadClient(id: string): Promise<any>;
+  getDownloadClients(): Promise<DownloadClientResource[]>;
+  createDownloadClient(data: DownloadClientResource): Promise<DownloadClientResource>;
+  updateDownloadClient(id: string, data: DownloadClientResource): Promise<DownloadClientResource>;
+  deleteDownloadClient(id: string): Promise<void>;
 
   // Indexers
   getIndexers(): Promise<any>;

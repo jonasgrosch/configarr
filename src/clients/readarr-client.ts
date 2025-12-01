@@ -2,6 +2,7 @@ import { KyHttpClient } from "../__generated__/ky-client";
 import { Api } from "../__generated__/readarr/Api";
 import {
   CustomFormatResource,
+  DownloadClientResource,
   LanguageResource,
   MetadataProfileResource,
   QualityDefinitionResource,
@@ -159,11 +160,11 @@ export class ReadarrClient
     return this.api.v1DownloadclientList();
   }
 
-  async createDownloadClient(data: any) {
+  async createDownloadClient(data: DownloadClientResource) {
     return this.api.v1DownloadclientCreate(data);
   }
 
-  async updateDownloadClient(id: string, data: any) {
+  async updateDownloadClient(id: string, data: DownloadClientResource) {
     return this.api.v1DownloadclientUpdate(id, data);
   }
 

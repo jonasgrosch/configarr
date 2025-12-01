@@ -1,6 +1,6 @@
 import { describe, expect, test, vi } from "vitest";
-import type { MergedDownloadClientResource } from "./__generated__/mergedTypes";
 import type { InputConfigDownloadClient } from "./types/config.types";
+import type { DownloadClientResource } from "./types/download-client.types";
 
 vi.mock("./logger", () => ({
   logger: {
@@ -36,7 +36,7 @@ const mockCurrentClient = {
     { name: "recentMoviePriority", value: -100 },
     { name: "olderMoviePriority", value: -100 },
   ],
-} as unknown as MergedDownloadClientResource;
+} as DownloadClientResource;
 
 describe("calculateDownloadClientsDiff", () => {
   test("should return undefined when no changes", () => {
@@ -124,7 +124,7 @@ describe("calculateDownloadClientsDiff", () => {
     const clientWithTags = {
       ...mockCurrentClient,
       tags: [3],
-    } as MergedDownloadClientResource;
+    } as DownloadClientResource;
     const desired: InputConfigDownloadClient = {
       name: "SABnzbd",
       implementation: "Sabnzbd",
@@ -144,7 +144,7 @@ describe("calculateDownloadClientsDiff", () => {
     const clientWithTags = {
       ...mockCurrentClient,
       tags: [2, 1],
-    } as MergedDownloadClientResource;
+    } as DownloadClientResource;
     const desired: InputConfigDownloadClient = {
       name: "SABnzbd",
       implementation: "Sabnzbd",
@@ -163,7 +163,7 @@ describe("calculateDownloadClientsDiff", () => {
     const clientWithTags = {
       ...mockCurrentClient,
       tags: [5, 10],
-    } as MergedDownloadClientResource;
+    } as DownloadClientResource;
     const desired: InputConfigDownloadClient = {
       name: "SABnzbd",
       implementation: "Sabnzbd",

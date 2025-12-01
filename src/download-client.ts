@@ -1,9 +1,7 @@
 import { logger } from "./logger";
 import { InputConfigDownloadClient } from "./types/config.types";
-import type { MergedDownloadClientResource } from "./__generated__/mergedTypes";
 import type { IArrClient } from "./clients/unified-client";
-
-type DownloadClientField = { name: string; value?: unknown };
+import type { DownloadClientField, DownloadClientResource } from "./types/download-client.types";
 
 const SENSITIVE_FIELDS = new Set(["apiKey", "password", "api_key"]);
 
@@ -11,10 +9,7 @@ function stripSensitiveFields(fields: DownloadClientField[]): DownloadClientFiel
   return fields.filter((f) => !SENSITIVE_FIELDS.has(f.name));
 }
 
-function findServerClient(
-  current: MergedDownloadClientResource[],
-  desired: InputConfigDownloadClient,
-): MergedDownloadClientResource | undefined {
+function findServerClient(current: DownloadClientResource[], desired: InputConfigDownloadClient): DownloadClientResource | undefined {
   return current.find((c) => c.name === desired.name && c.implementation === desired.implementation);
 }
 
@@ -37,7 +32,7 @@ function areTagsEqual(serverTags: number[], desiredTags: number[]): boolean {
   return [...serverTags].sort().join(",") === [...desiredTags].sort().join(",");
 }
 
-function hasClientChanged(current: MergedDownloadClientResource, desired: InputConfigDownloadClient): boolean {
+function hasClientChanged(current: DownloadClientResource, desired: InputConfigDownloadClient): boolean {
   if (desired.enable !== undefined && current.enable !== desired.enable) return true;
   if (desired.priority !== undefined && current.priority !== desired.priority) return true;
   if (desired.protocol !== undefined && current.protocol !== desired.protocol) return true;
@@ -64,15 +59,15 @@ function hasClientChanged(current: MergedDownloadClientResource, desired: InputC
 
 export type DownloadClientsDiff = {
   toCreate: InputConfigDownloadClient[];
-  toUpdate: { id: number; data: MergedDownloadClientResource }[];
+  toUpdate: { id: number; data: DownloadClientResource }[];
 };
 
 export function calculateDownloadClientsDiff(
-  current: MergedDownloadClientResource[],
+  current: DownloadClientResource[],
   desired: InputConfigDownloadClient[],
 ): DownloadClientsDiff | undefined {
   const toCreate: InputConfigDownloadClient[] = [];
-  const toUpdate: { id: number; data: MergedDownloadClientResource }[] = [];
+  const toUpdate: { id: number; data: DownloadClientResource }[] = [];
 
   for (const desiredClient of desired) {
     const serverClient = findServerClient(current, desiredClient);
@@ -85,7 +80,7 @@ export function calculateDownloadClientsDiff(
     if (hasClientChanged(serverClient, desiredClient)) {
       toUpdate.push({
         id: serverClient.id!,
-        data: { ...serverClient, ...desiredClient } as MergedDownloadClientResource,
+        data: { ...serverClient, ...desiredClient } as DownloadClientResource,
       });
     } else {
       logger.info(`DownloadClient unchanged: ${desiredClient.name} (${desiredClient.implementation})`);
@@ -99,11 +94,7 @@ export function calculateDownloadClientsDiff(
   return { toCreate, toUpdate };
 }
 
-export async function applyDownloadClients(
-  api: IArrClient<any, any, any, any>,
-  diff: DownloadClientsDiff | undefined,
-  dryRun: boolean,
-): Promise<void> {
+export async function applyDownloadClients(api: IArrClient, diff: DownloadClientsDiff | undefined, dryRun: boolean): Promise<void> {
   if (!diff) {
     return;
   }
@@ -114,7 +105,7 @@ export async function applyDownloadClients(
     } else {
       logger.info(`Creating DownloadClient: ${client.name} (${client.implementation})`);
       try {
-        await api.createDownloadClient(client);
+        await api.createDownloadClient(client as unknown as DownloadClientResource);
       } catch (error: any) {
         logger.error(`Failed creating DownloadClient (${client.name})`);
         throw error;
@@ -128,7 +119,7 @@ export async function applyDownloadClients(
     } else {
       logger.info(`Updating DownloadClient: ${data.name} (id=${id})`);
       try {
-        await api.updateDownloadClient(String(id), data);
+        await api.updateDownloadClient(String(id), data as DownloadClientResource);
       } catch (error: any) {
         logger.error(`Failed updating DownloadClient (${data.name})`);
         throw error;

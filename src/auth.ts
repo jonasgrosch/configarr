@@ -65,11 +65,7 @@ export function calculateAuthDiff(current: MergedHostConfigResource, desired: In
   };
 }
 
-export async function syncAuthSettings(
-  api: IArrClient<any, any, any, any>,
-  desired: InputConfigAuthSettings | undefined,
-  dryRun: boolean,
-): Promise<void> {
+export async function syncAuthSettings(api: IArrClient, desired: InputConfigAuthSettings | undefined, dryRun: boolean): Promise<void> {
   if (!desired) {
     return;
   }

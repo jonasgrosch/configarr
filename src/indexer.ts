@@ -132,11 +132,7 @@ export function calculateIndexersDiff(
   return { toCreate, toUpdate, missingTags };
 }
 
-export async function applyIndexers(
-  api: IArrClient<any, any, any, any>,
-  diff: IndexersDiff | undefined,
-  dryRun: boolean,
-): Promise<void> {
+export async function applyIndexers(api: IArrClient, diff: IndexersDiff | undefined, dryRun: boolean): Promise<void> {
   if (!diff) {
     return;
   }

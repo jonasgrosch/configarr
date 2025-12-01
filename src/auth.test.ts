@@ -42,7 +42,7 @@ describe("syncAuthSettings", () => {
     const api = {
       getHostConfig: vi.fn().mockResolvedValue(mockHostConfig),
       updateHostConfig: vi.fn().mockResolvedValue(undefined),
-    } as unknown as IArrClient<any, any, any, any>;
+    } as unknown as IArrClient;
 
     await syncAuthSettings(api, { authentication_method: "basic" }, false);
 
@@ -54,7 +54,7 @@ describe("syncAuthSettings", () => {
     const api = {
       getHostConfig: vi.fn(),
       updateHostConfig: vi.fn(),
-    } as unknown as IArrClient<any, any, any, any>;
+    } as unknown as IArrClient;
 
     await syncAuthSettings(api, undefined, false);
 
