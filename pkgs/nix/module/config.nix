@@ -5,6 +5,7 @@
   ...
 }: let
   cfg = config.services.configarr;
+  configarrPackage = pkgs.callPackage ../package.nix { };
 in {
   config = lib.mkIf cfg.enable {
     systemd = {
@@ -15,15 +16,16 @@ in {
         ];
         description = "Run Configarr (packaged) once";
         path = [pkgs.git];
-        preStart = let
-          configFile = pkgs.writeText "configarr-config.yml" cfg.config;
-        in ''
+        preStart =
+          let
+            configFile = pkgs.writeText "configarr-config.yml" cfg.config;
+          in ''
           install -D -m 0644 ${configFile} ${cfg.dataDir}/config/config.yml
           chown ${cfg.user}:${cfg.group} ${cfg.dataDir}/config/config.yml
         '';
         serviceConfig = {
           EnvironmentFile = lib.optional (cfg.environmentFile != null) cfg.environmentFile;
-          ExecStart = lib.getExe (import ../package.nix {inherit lib pkgs;});
+          ExecStart = lib.getExe configarrPackage;
           Group = cfg.group;
           Type = "oneshot";
           User = cfg.user;
